@@ -43,28 +43,76 @@ class Graph:
         Print each vertex in depth-first order
         beginning from starting_vertex.
         """
-        pass  # TODO
-    def dft_recursive(self, starting_vertex):
+        stak = Stack()
+        visited = set()
+        stak.push(starting_vertex)
+        while stak.size() > 0:
+            vertex = stak.pop()
+            if vertex not in visited:
+                visited.add(vertex)
+                print(vertex)
+                for next_vert in self.vertices[vertex]:
+                    stak.push(next_vert)
+    def dft_recursive(self, starting_vertex, visited=None):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         This should be done using recursion.
         """
-        pass  # TODO
+        if visited is None:
+            visited = set()
+        print(starting_vertex)
+        visited.add(starting_vertex)
+        for child_vertex in self.vertices[starting_vertex]:
+            if child_vertex not in visited:
+                self.dft_recursive(child_vertex, visited)
+   
     def bfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing the shortest path from
         starting_vertex to destination_vertex in
         breath-first order.
         """
-        pass  # TODO
+        qq = Queue()
+        visited = set()
+        qq.enqueue([starting_vertex])
+        while qq.size() > 0:
+            path = qq.dequeue()
+            vertex = path[-1]
+            if vertex == destination_vertex:
+                return path
+
+            if vertex not in visited:
+                visited.add(vertex)
+                for adjacent in self.vertices[vertex]:
+                    mst = list(path)
+                    mst.append(adjacent)
+                    qq.enqueue(mst)
+
+        return mst
+
     def dfs(self, starting_vertex, destination_vertex):
         """
         Return a list containing a path from
         starting_vertex to destination_vertex in
         depth-first order.
         """
-        pass  # TODO
+        stak = Stack()
+        visited = set()
+        stak.push([starting_vertex])
+        while stak.size() > 0:
+            path = stak.pop()
+            vertex = path[-1]
+            if vertex == destination_vertex:
+                return path
+            elif vertex not in visited:
+                visited.add(vertex)
+                for adjacent in self.vertices[vertex]:
+                    mst = list(path)
+                    mst.append(adjacent)
+                    stak.push(mst)
+
+        return mst
 
 
 
