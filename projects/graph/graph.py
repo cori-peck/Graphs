@@ -79,17 +79,14 @@ class Graph:
         while qq.size() > 0:
             path = qq.dequeue()
             vertex = path[-1]
-            if vertex == destination_vertex:
-                return path
-
             if vertex not in visited:
+                if vertex == destination_vertex:
+                    return path
                 visited.add(vertex)
-                for adjacent in self.vertices[vertex]:
-                    mst = list(path)
-                    mst.append(adjacent)
-                    qq.enqueue(mst)
-
-        return mst
+                for next_vert in self.vertices[vertex]:
+                    new_path = list(path)
+                    new_path.append(next_vert)
+                    qq.enqueue(new_path)
 
     def dfs(self, starting_vertex, destination_vertex):
         """
