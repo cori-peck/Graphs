@@ -1,3 +1,19 @@
+import random
+import math
+
+
+class Queue():
+    def __init__(self):
+        self.queue = []
+    def enqueue(self, value):
+        self.queue.append(value)
+    def dequeue(self):
+        if self.size() > 0:
+            return self.queue.pop(0)
+        else:
+            return None
+    def size(self):
+        return len(self.queue)
 
 
 class User:
@@ -47,8 +63,19 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        for i in range(0, numUsers):
+            self.addUser(f'{i}')
 
-        # Create friendships
+        randoFriendships = []
+        for userID in self.friendships:
+            for friendID in range(userID + 1, self.lastID + 1):
+                randoFriendships.append((userID, friendID))
+
+        random.shuffle(randoFriendships)
+
+        for i in range(0, math.floor(numUsers * avgFriendships / 2)):
+            friendships = randoFriendships[i]
+            self.addFriendship(friendships[0], friendships[1])
 
     def getAllSocialPaths(self, userID):
         """
@@ -61,6 +88,39 @@ class SocialGraph:
         """
         visited = {}  # Note that this is a dictionary, not a set
         # !!!! IMPLEMENT ME
+        #qq = Queue()
+        #visited = set()
+        #qq.enqueue([beginWord])
+
+
+        #while qq.size() > 0:
+            #path = qq.dequeue()
+            #vertex = path[-1] #Vertex is our word
+            #if vertex not in visited:
+                #here's where we do the thing!
+                #if vertex == endWord:
+                    #return path
+                #visited.add(vertex)
+                #for new_vert in get_neighbors(vertex):
+                    #new_path = list(path)
+                    #new_path.append(new_vert)
+                    #qq.enqueue(new_path)
+
+        qq = Queue()
+        qq.enqueue([userID])
+        while qq.size() > 0:
+            path = qq.dequeue()
+            vertex = path[-1]
+            if vertex == userID:
+                return path
+            if vertex not in visited:
+                visited[vertex] = path
+            for friend in self.friendships[vertex]:
+                if friend not in visited:
+                    new_path = list(path)
+                    new_path.append(friend)
+                    qq.enqueue(new_path)
+
         return visited
 
 
